@@ -14,13 +14,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Select as SelectUI,
-  SelectContent as SelectContentUI,
-  SelectItem as SelectItemUI,
-  SelectTrigger as SelectTriggerUI,
-  SelectValue as SelectValueUI,
-} from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { useTheme } from "next-themes";
 import { User, Bell, Shield, Palette, Globe, Key } from "lucide-react";
