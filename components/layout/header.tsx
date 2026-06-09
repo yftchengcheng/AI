@@ -41,13 +41,11 @@ export function Header() {
           <Bell size={18} />
         </Button>
 
-        {/* Theme toggle */}
+        {/* Theme toggle — DropdownMenuTrigger IS a button already */}
         <DropdownMenu>
-          <DropdownMenuTrigger>
-            <Button variant="ghost" size="icon" className="h-9 w-9" aria-label="切换主题">
-              <Sun size={18} className="rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Moon size={18} className="absolute rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-            </Button>
+          <DropdownMenuTrigger className="inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-muted transition-colors">
+            <Sun size={18} className="rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+            <Moon size={18} className="absolute rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-32">
             <DropdownMenuItem onClick={() => setTheme("light")}>
@@ -62,16 +60,14 @@ export function Header() {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        {/* User avatar */}
+        {/* User avatar — DropdownMenuTrigger IS a button already */}
         <DropdownMenu>
-          <DropdownMenuTrigger>
-            <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full ml-1">
-              <Avatar className="h-8 w-8">
-                <AvatarFallback className="bg-primary/10 text-primary text-xs font-medium">
-                  T
-                </AvatarFallback>
-              </Avatar>
-            </Button>
+          <DropdownMenuTrigger className="ml-1 inline-flex h-9 w-9 items-center justify-center rounded-full hover:bg-muted transition-colors">
+            <Avatar className="h-8 w-8">
+              <AvatarFallback className="bg-primary/10 text-primary text-xs font-medium">
+                T
+              </AvatarFallback>
+            </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-40">
             <DropdownMenuItem>个人中心</DropdownMenuItem>

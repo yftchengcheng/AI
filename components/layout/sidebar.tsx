@@ -87,10 +87,8 @@ export function Sidebar() {
         <div className="px-3 pt-3">
           {collapsed ? (
             <Tooltip>
-              <TooltipTrigger>
-                <Button size="icon" variant="default" className="mx-auto flex h-9 w-9">
-                  <Plus size={18} />
-                </Button>
+              <TooltipTrigger className="mx-auto flex h-9 w-9 items-center justify-center rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
+                <Plus size={18} />
               </TooltipTrigger>
               <TooltipContent side="right">快速创建</TooltipContent>
             </Tooltip>
