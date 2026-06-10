@@ -28,6 +28,8 @@ import {
   Plus,
   FolderOpen,
   Library,
+  Workflow,
+  BookOpen,
 } from "lucide-react";
 
 // ────────────── Navigation definitions ──────────────
@@ -35,6 +37,8 @@ import {
 const mainNav = [
   { href: "/", label: "仪表盘", icon: LayoutDashboard },
   { href: "/projects", label: "我的项目", icon: FolderOpen },
+  { href: "/workflow", label: "工作流", icon: Workflow },
+  { href: "/knowledge", label: "知识库", icon: BookOpen },
   { href: "/skills", label: "Skill 库", icon: Library },
   { href: "/diagnostics", label: "开发诊断", icon: Stethoscope },
   { href: "/marketplace", label: "工具市场", icon: Store },
