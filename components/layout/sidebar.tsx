@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useSidebarStore } from "@/lib/store";
 import { Button } from "@/components/ui/button";
@@ -58,6 +58,7 @@ const bottomNav = [{ href: "/settings", label: "设置", icon: Settings }];
 
 export function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const { collapsed, toggle } = useSidebarStore();
 
   return (
@@ -101,7 +102,7 @@ export function Sidebar() {
               <TooltipContent side="right">快速创建</TooltipContent>
             </Tooltip>
           ) : (
-            <Button variant="default" className="w-full gap-2 h-9 text-sm">
+            <Button variant="default" className="w-full gap-2 h-9 text-sm" onClick={() => router.push("/builder/web")}>
               <Plus size={16} />
               创建新工具
             </Button>
