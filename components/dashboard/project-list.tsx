@@ -17,11 +17,11 @@ const typeConfig: Record<
   ToolProject["type"],
   { label: string; icon: React.ElementType; color: string }
 > = {
-  app: { label: "App", icon: Smartphone, color: "bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400" },
-  miniapp: { label: "小程序", icon: AppWindow, color: "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400" },
-  web: { label: "Web", icon: Globe, color: "bg-violet-50 text-violet-600 dark:bg-violet-500/10 dark:text-violet-400" },
-  skill: { label: "Skill", icon: Puzzle, color: "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400" },
-  agent: { label: "Agent", icon: Bot, color: "bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400" },
+  app: { label: "App", icon: Smartphone, color: "bg-muted text-muted-foreground" },
+  miniapp: { label: "小程序", icon: AppWindow, color: "bg-muted text-muted-foreground" },
+  web: { label: "Web", icon: Globe, color: "bg-muted text-muted-foreground" },
+  skill: { label: "Skill", icon: Puzzle, color: "bg-muted text-muted-foreground" },
+  agent: { label: "Agent", icon: Bot, color: "bg-muted text-muted-foreground" },
 };
 
 const statusLabel: Record<ToolProject["status"], string> = {

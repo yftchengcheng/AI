@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
 import { MainLayout } from "@/components/layout/main-layout";
 import { Card } from "@/components/ui/card";
@@ -39,8 +40,8 @@ const categories = [
   { value: "agent" as const, label: "Agent", icon: Bot },
 ];
 
-const icons: Record<string, string> = {
-  app: "📱", miniapp: "🛒", web: "🌐", skill: "🔍", agent: "🤖",
+const icons: Record<string, React.ComponentType<{ size?: number }>> = {
+  app: Smartphone, miniapp: AppWindow, web: Globe, skill: Puzzle, agent: Bot,
 };
 
 // ── Page ──────────────────────────────────────────────────────
@@ -120,7 +121,7 @@ export default function MarketplacePage() {
               onClick={() => setSelected(tool)}
             >
               <div className="flex items-start justify-between">
-                <span className="text-2xl">{icons[tool.category] || "🔧"}</span>
+                <span className="text-muted-foreground">{React.createElement(icons[tool.category] as React.ComponentType<{ size?: number }> || Globe, { size: 20 })}</span>
                 <Badge variant="secondary" className="text-xs">
                   {categories.find((c) => c.value === tool.category)?.label}
                 </Badge>
@@ -158,7 +159,7 @@ export default function MarketplacePage() {
             <DialogContent className="sm:max-w-md">
               <DialogHeader>
                 <div className="flex items-center gap-2">
-                  <span className="text-2xl">{icons[selected.category] || "🔧"}</span>
+                  <span className="text-2xl">{React.createElement(icons[selected.category] as React.ComponentType<{ size?: number }> || Globe, { size: 24 })}</span>
                   <DialogTitle className="text-lg">{selected.name}</DialogTitle>
                 </div>
               </DialogHeader>

@@ -96,7 +96,7 @@ function AppStep2({ config, setConfig }: BuilderStepProps) {
         const selected = (config.features as string[] || []).includes(f);
         return (
           <button key={f} onClick={() => setConfig({ ...config, features: selected ? (config.features as string[]).filter((x) => x !== f) : [...(config.features as string[] || []), f] })}
-            className={`rounded-lg border p-4 text-left text-sm transition-colors ${selected ? "border-primary bg-primary/[0.05] text-primary font-medium" : "border-border hover:border-muted-foreground/30"}`}>
+            className={`rounded-lg border p-4 text-left text-sm transition-colors ${selected ? "border-foreground/20 bg-muted font-medium" : "border-border hover:border-foreground/10"}`}>
             {f}
           </button>
         );
@@ -157,7 +157,7 @@ function MiniappStep2({ config, setConfig }: BuilderStepProps) {
         const selected = (config.scenes as string[] || []).includes(s);
         return (
           <button key={s} onClick={() => setConfig({ ...config, scenes: selected ? (config.scenes as string[]).filter((x) => x !== s) : [...(config.scenes as string[] || []), s] })}
-            className={`rounded-lg border p-4 text-left text-sm transition-colors ${selected ? "border-emerald-500 bg-emerald-500/[0.05] text-emerald-600 font-medium" : "border-border hover:border-muted-foreground/30"}`}>
+            className={`rounded-lg border p-4 text-left text-sm transition-colors ${selected ? "border-foreground/20 bg-muted font-medium" : "border-border hover:border-muted-foreground/30"}`}>
             {s}
           </button>
         );
@@ -219,7 +219,7 @@ function WebStep2({ config, setConfig }: BuilderStepProps) {
         const selected = (config.pages as string[] || []).includes(p);
         return (
           <button key={p} onClick={() => setConfig({ ...config, pages: selected ? (config.pages as string[]).filter((x) => x !== p) : [...(config.pages as string[] || []), p] })}
-            className={`rounded-lg border p-4 text-left text-sm transition-colors ${selected ? "border-violet-500 bg-violet-500/[0.05] text-violet-600 font-medium" : "border-border hover:border-muted-foreground/30"}`}>
+            className={`rounded-lg border p-4 text-left text-sm transition-colors ${selected ? "border-foreground/20 bg-muted font-medium" : "border-border hover:border-muted-foreground/30"}`}>
             {p}
           </button>
         );
@@ -262,7 +262,7 @@ function SkillStep1({ config, setConfig }: BuilderStepProps) {
           const selected = (config.capabilities as string[] || []).includes(c.id);
           return (
             <button key={c.id} onClick={() => setConfig({ ...config, capabilities: selected ? (config.capabilities as string[]).filter((x) => x !== c.id) : [...(config.capabilities as string[] || []), c.id] })}
-              className={`rounded-lg border p-3 text-left transition-colors ${selected ? "border-amber-500 bg-amber-500/[0.05] text-amber-600 font-medium" : "border-border hover:border-muted-foreground/30"}`}>
+              className={`rounded-lg border p-3 text-left transition-colors ${selected ? "border-foreground/20 bg-muted font-medium" : "border-border hover:border-muted-foreground/30"}`}>
               <div className="text-sm font-medium">{c.label}</div>
               <div className="text-xs text-muted-foreground mt-0.5">{c.desc}</div>
             </button>
@@ -326,7 +326,7 @@ function AgentStep1({ config, setConfig }: BuilderStepProps) {
           const selected = (config.tools as string[] || []).includes(t.id);
           return (
             <button key={t.id} onClick={() => setConfig({ ...config, tools: selected ? (config.tools as string[]).filter((x) => x !== t.id) : [...(config.tools as string[] || []), t.id] })}
-              className={`rounded-lg border p-3 text-left transition-colors ${selected ? "border-rose-500 bg-rose-500/[0.05] text-rose-600 font-medium" : "border-border hover:border-muted-foreground/30"}`}>
+              className={`rounded-lg border p-3 text-left transition-colors ${selected ? "border-foreground/20 bg-muted font-medium" : "border-border hover:border-muted-foreground/30"}`}>
               <div className="text-sm font-medium">{t.label}</div>
               <div className="text-xs text-muted-foreground mt-0.5">{t.desc}</div>
             </button>
@@ -511,7 +511,7 @@ export default function BuilderPage({ builderId }: { builderId: BuilderId }) {
       >
         {finished ? (
           <div className="flex flex-col items-center justify-center py-12 text-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/10 mb-4">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted mb-4">
               <CheckCircle2 size={32} className="text-emerald-500" />
             </div>
             <h2 className="text-lg font-semibold mb-2">项目创建成功</h2>
