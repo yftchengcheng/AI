@@ -45,6 +45,7 @@ model Project {
   name        String
   type        ToolType
   status      ProjectStatus @default(draft)
+  visibility  ProjectVisibility @default(private)
   description String   @default("")
   config      Json     @default("{}")
   outputUrl   String?
@@ -55,6 +56,11 @@ model Project {
   marketplaceTool MarketplaceTool?
 
   @@map("projects")
+}
+
+enum ProjectVisibility {
+  private
+  public
 }
 
 enum ToolType {

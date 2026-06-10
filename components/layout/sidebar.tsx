@@ -26,12 +26,16 @@ import {
   ChevronLeft,
   ChevronRight,
   Plus,
+  FolderOpen,
+  Library,
 } from "lucide-react";
 
 // ────────────── Navigation definitions ──────────────
 
 const mainNav = [
   { href: "/", label: "仪表盘", icon: LayoutDashboard },
+  { href: "/projects", label: "我的项目", icon: FolderOpen },
+  { href: "/skills", label: "Skill 库", icon: Library },
   { href: "/diagnostics", label: "开发诊断", icon: Stethoscope },
   { href: "/marketplace", label: "工具市场", icon: Store },
 ];

@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useSidebarStore } from "@/lib/store";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -14,6 +15,7 @@ import { useTheme } from "next-themes";
 import { Moon, Sun, Monitor, Search, Bell } from "lucide-react";
 
 export function Header() {
+  const router = useRouter();
   const { collapsed } = useSidebarStore();
   const { theme, setTheme } = useTheme();
 
@@ -70,8 +72,8 @@ export function Header() {
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-40">
+            <DropdownMenuItem onClick={() => router.push("/projects")}>我的项目</DropdownMenuItem>
             <DropdownMenuItem>个人中心</DropdownMenuItem>
-            <DropdownMenuItem>我的项目</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>退出登录</DropdownMenuItem>
           </DropdownMenuContent>

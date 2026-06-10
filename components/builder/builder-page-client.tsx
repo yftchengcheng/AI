@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { MainLayout } from "@/components/layout/main-layout";
 import { BuilderLayout } from "@/components/builder/builder-layout";
 import { Input } from "@/components/ui/input";
@@ -20,8 +21,16 @@ import {
   Puzzle,
   Bot,
   Check,
+  CheckCircle2,
+  Eye,
+  FolderOpen,
+  Plus,
+  Loader2,
 } from "lucide-react";
 import { Switch as SwitchUI } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
+import { api } from "@/lib/api";
+import type { ApiProject } from "@/types";
 
 // ── Types ──────────────────────────────────────────────────
 
@@ -433,10 +442,14 @@ const builderDefs: Record<
 
 export default function BuilderPage({ builderId }: { builderId: BuilderId }) {
   const def = builderDefs[builderId];
+  const router = useRouter();
   const [step, setStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
   const [config, setConfig] = useState<BuilderConfig>({ ...def.defaultConfig });
   const [finished, setFinished] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [createdProjectId, setCreatedProjectId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleNext = () => {
     setCompletedSteps((s) => new Set([...s, step]));
@@ -446,9 +459,37 @@ export default function BuilderPage({ builderId }: { builderId: BuilderId }) {
   const handleStepClick = (i: number) => {
     if (completedSteps.has(i) || i < step) setStep(i);
   };
-  const handleFinish = () => {
+  const handleFinish = async () => {
     setCompletedSteps((s) => new Set([...s, step]));
-    setFinished(true);
+    setSubmitting(true);
+    setError(null);
+    try {
+      // 1. Create project via API
+      const project = await api.post<ApiProject>("/api/projects", {
+        name: (config.name as string) || `未命名${def.title}项目`,
+        type: builderId,
+        description: (config.description as string) || "",
+        config: config,
+        visibility: "private",
+      });
+
+      setCreatedProjectId(project.id);
+
+      // 2. Optionally publish to marketplace
+      if (config.publishToMarketplace) {
+        try {
+          await api.post(`/api/projects/${project.id}/publish`);
+        } catch {
+          // non-fatal: project created, just failed to publish
+        }
+      }
+
+      setFinished(true);
+    } catch (err: any) {
+      setError(err?.message || "创建项目失败，请重试");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const StepRenderer = def.renderers[step];
@@ -470,16 +511,32 @@ export default function BuilderPage({ builderId }: { builderId: BuilderId }) {
       >
         {finished ? (
           <div className="flex flex-col items-center justify-center py-12 text-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 mb-4">
-              <Check size={32} className="text-primary" />
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/10 mb-4">
+              <CheckCircle2 size={32} className="text-emerald-500" />
             </div>
-            <h2 className="text-lg font-semibold mb-2">构建已提交</h2>
-            <p className="text-sm text-muted-foreground max-w-md">
-              你的{def.title}配置已保存。后端联调后将调用 DeepSeek V4 Pro 生成完整代码。当前配置：
+            <h2 className="text-lg font-semibold mb-2">项目创建成功</h2>
+            <p className="text-sm text-muted-foreground max-w-md mb-6">
+              你的「{(config.name as string) || def.title}」项目已保存{config.publishToMarketplace ? "并提交到市场审核" : ""}。
             </p>
-            <pre className="mt-4 p-4 bg-muted rounded-lg text-xs text-left max-w-md overflow-auto">
-              {JSON.stringify(config, null, 2)}
-            </pre>
+            {error && (
+              <p className="text-sm text-destructive mb-4">{error}</p>
+            )}
+            <div className="flex gap-3 flex-wrap justify-center">
+              {createdProjectId && (
+                <Button onClick={() => router.push(`/projects/${createdProjectId}`)}>
+                  <Eye size={14} className="mr-1.5" /> 查看项目
+                </Button>
+              )}
+              <Button variant="outline" onClick={() => router.push(`/builder/${builderId}`)}>
+                <Plus size={14} className="mr-1.5" /> 新建
+              </Button>
+              <Button variant="outline" onClick={() => router.push("/projects")}>
+                <FolderOpen size={14} className="mr-1.5" /> 我的项目
+              </Button>
+              <Button variant="ghost" onClick={() => router.push("/")}>
+                返回仪表盘
+              </Button>
+            </div>
           </div>
         ) : (
           <StepRenderer config={config} setConfig={setConfig} />

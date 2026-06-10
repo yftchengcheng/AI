@@ -51,7 +51,7 @@ export function ProjectList({ projects }: { projects: ToolProject[] }) {
             return (
               <Link
                 key={p.id}
-                href={`/builder/${p.type}`}
+                href={`/projects/${p.id}`}
                 className="flex items-center gap-4 px-5 py-3.5 hover:bg-muted/50 transition-colors"
               >
                 <div

@@ -52,4 +52,9 @@ export class ProjectsController {
   remove(@Param("id") id: string) {
     return this.projectsService.remove(id);
   }
+
+  @Post(":id/publish")
+  async publish(@Param("id") id: string) {
+    return this.projectsService.publish(id);
+  }
 }
