@@ -17,6 +17,7 @@ const marketplace_module_1 = require("./marketplace/marketplace.module");
 const user_module_1 = require("./user/user.module");
 const skills_module_1 = require("./skills/skills.module");
 const knowledge_module_1 = require("./knowledge/knowledge.module");
+const workflow_module_1 = require("./workflow/workflow.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -32,6 +33,7 @@ exports.AppModule = AppModule = __decorate([
             user_module_1.UserModule,
             skills_module_1.SkillsModule,
             knowledge_module_1.KnowledgeModule,
+            workflow_module_1.WorkflowModule,
         ],
     })
 ], AppModule);

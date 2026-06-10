@@ -8,6 +8,7 @@ import { MarketplaceModule } from "./marketplace/marketplace.module";
 import { UserModule } from "./user/user.module";
 import { SkillsModule } from "./skills/skills.module";
 import { KnowledgeModule } from "./knowledge/knowledge.module";
+import { WorkflowModule } from "./workflow/workflow.module";
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { KnowledgeModule } from "./knowledge/knowledge.module";
     UserModule,
     SkillsModule,
     KnowledgeModule,
+    WorkflowModule,
   ],
 })
 export class AppModule {}
