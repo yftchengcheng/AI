@@ -59,7 +59,7 @@ export default function MarketplacePage() {
     const params: Record<string, string> = {};
     if (category !== "all") params.category = category;
     if (search) params.search = search;
-    api.get<{ tools: ApiMarketplaceTool[]; total: number }>("/api/marketplace", params)
+    api.getSafe<{ tools: ApiMarketplaceTool[]; total: number }>("/api/marketplace", { tools: [], total: 0 }, params)
       .then(({ tools }) => setTools(tools))
       .catch(() => {})
       .finally(() => setLoading(false));

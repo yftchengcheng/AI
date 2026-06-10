@@ -33,12 +33,36 @@ function buildUrl(path: string, params?: Record<string, string | number | undefi
   return url.toString();
 }
 
+/**
+ * Wraps a fetch-based API call with graceful fallback.
+ * When the backend is unreachable, returns the provided fallback value
+ * instead of throwing — so the UI degrades gracefully rather than crashing.
+ */
+async function safeFetch<T>(fn: () => Promise<T>, fallback: T): Promise<T> {
+  try {
+    return await fn();
+  } catch (err: any) {
+    // Only silence network errors (backend not running)
+    if (err instanceof TypeError && err.message === "Failed to fetch") {
+      // Backend not running — graceful degradation
+      console.debug("[api] Backend unreachable, using fallback data");
+      return fallback;
+    }
+    // Re-throw real API errors (4xx, 5xx) so pages can handle them
+    throw err;
+  }
+}
+
 export const api = {
   async get<T>(path: string, params?: Record<string, string | number | undefined>): Promise<T> {
-    const res = await fetch(buildUrl(path, params), {
-      credentials: "include",
-    });
-    return handleResponse<T>(res);
+    return handleResponse<T>(
+      await fetch(buildUrl(path, params), { credentials: "include" })
+    );
+  },
+
+  /** GET with fallback — returns fallback when backend is down */
+  async getSafe<T>(path: string, fallback: T, params?: Record<string, string | number | undefined>): Promise<T> {
+    return safeFetch(() => api.get<T>(path, params), fallback);
   },
 
   async post<T>(path: string, body?: unknown): Promise<T> {
@@ -49,6 +73,11 @@ export const api = {
       body: body ? JSON.stringify(body) : undefined,
     });
     return handleResponse<T>(res);
+  },
+
+  /** POST with fallback */
+  async postSafe<T>(path: string, body: unknown, fallback: T): Promise<T> {
+    return safeFetch(() => api.post<T>(path, body), fallback);
   },
 
   async put<T>(path: string, body?: unknown): Promise<T> {
@@ -69,14 +98,7 @@ export const api = {
     return handleResponse<T>(res);
   },
 
-  /**
-   * Stream response from a POST endpoint (used for diagnostics SSE).
-   * Returns an async generator of text chunks.
-   */
-  async *stream(
-    path: string,
-    body: unknown
-  ): AsyncGenerator<string> {
+  async *stream(path: string, body: unknown): AsyncGenerator<string> {
     const res = await fetch(buildUrl(path), {
       method: "POST",
       headers: { "Content-Type": "application/json" },

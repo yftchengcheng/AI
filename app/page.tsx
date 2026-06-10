@@ -30,7 +30,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get<ApiProject[]>("/api/projects")
+    api.getSafe<ApiProject[]>("/api/projects", [])
       .then(setProjects)
       .catch(() => {})
       .finally(() => setLoading(false));

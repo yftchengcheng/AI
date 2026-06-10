@@ -55,7 +55,7 @@ export default function ProjectDetailPage() {
   const logRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    api.get<ApiProject>(`/api/projects/${id}`)
+    api.getSafe<ApiProject | null>(`/api/projects/${id}`, null)
       .then(setProject)
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
@@ -87,7 +87,7 @@ export default function ProjectDetailPage() {
         }
         setBuildLog((prev) => [...prev, "✅ 构建完成！代码已生成。"]);
         // Refresh project status
-        api.get<ApiProject>(`/api/projects/${id}`).then(setProject);
+        api.getSafe<ApiProject | null>(`/api/projects/${id}`, null).then(setProject);
       } catch (err: any) {
         setBuildLog((prev) => [...prev, `❌ 构建失败: ${err.message}`]);
       } finally {

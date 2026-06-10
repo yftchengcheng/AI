@@ -59,7 +59,7 @@ export default function ProjectsPage() {
 
   useEffect(() => {
     setLoading(true);
-    api.get<ApiProject[]>("/api/projects")
+    api.getSafe<ApiProject[]>("/api/projects", [])
       .then(setProjects)
       .catch(console.error)
       .finally(() => setLoading(false));
