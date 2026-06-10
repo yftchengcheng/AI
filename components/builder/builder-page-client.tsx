@@ -342,19 +342,42 @@ function AgentStep2({ config, setConfig }: BuilderStepProps) {
     <div className="space-y-4">
       <div className="space-y-2">
         <Label>System Prompt 完整版</Label>
-        <Textarea placeholder="编写完整的 System Prompt..." rows={8} value={config.systemPrompt as string || ""} onChange={(e) => setConfig({ ...config, systemPrompt: e.target.value })} />
+        <Textarea placeholder="编写完整的 System Prompt..." rows={5} value={config.systemPrompt as string || ""} onChange={(e) => setConfig({ ...config, systemPrompt: e.target.value })} />
       </div>
-      <div className="space-y-2">
-        <Label>模型选择</Label>
-        <Select value={(config.model as string) || "deepseek-v4"} onValueChange={(v) => setConfig({ ...config, model: v })}>
-          <SelectTrigger><SelectValue /></SelectTrigger>
-          <SelectContent>
-            <SelectItem value="deepseek-v4">DeepSeek V4 Pro</SelectItem>
-            <SelectItem value="claude-opus">Claude Opus</SelectItem>
-            <SelectItem value="gpt-4o">GPT-4o</SelectItem>
-          </SelectContent>
-        </Select>
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label>模型选择</Label>
+          <Select value={(config.model as string) || "deepseek-v4"} onValueChange={(v) => setConfig({ ...config, model: v })}>
+            <SelectTrigger><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="deepseek-v4">DeepSeek V4 Pro</SelectItem>
+              <SelectItem value="claude-opus">Claude Opus</SelectItem>
+              <SelectItem value="gpt-4o">GPT-4o</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="space-y-2">
+          <Label>记忆策略</Label>
+          <Select value={(config.memoryMode as string) || "none"} onValueChange={(v) => setConfig({ ...config, memoryMode: v })}>
+            <SelectTrigger><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="none">无记忆</SelectItem>
+              <SelectItem value="short_term">短期记忆（会话内）</SelectItem>
+              <SelectItem value="long_term">长期+短期（持久化）</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
+      {(config.memoryMode as string) === "short_term" && (
+        <div className="rounded-lg bg-muted p-3 text-xs text-muted-foreground">
+          💡 短期记忆：Agent 会记住当前会话最近 20 轮对话，关闭后自动清除。调用 Memory API 的 short-term 端点。
+        </div>
+      )}
+      {(config.memoryMode as string) === "long_term" && (
+        <div className="rounded-lg bg-muted p-3 text-xs text-muted-foreground">
+          💡 长期记忆：Agent 会将关键信息通过 PGVector 持久化，下次对话时可语义检索历史记忆。调用 Memory API 的 recall + long-term 端点。
+        </div>
+      )}
     </div>
   );
 }
