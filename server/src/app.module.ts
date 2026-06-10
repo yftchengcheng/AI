@@ -9,6 +9,7 @@ import { UserModule } from "./user/user.module";
 import { SkillsModule } from "./skills/skills.module";
 import { KnowledgeModule } from "./knowledge/knowledge.module";
 import { WorkflowModule } from "./workflow/workflow.module";
+import { MemoryModule } from "./memory/memory.module";
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { WorkflowModule } from "./workflow/workflow.module";
     SkillsModule,
     KnowledgeModule,
     WorkflowModule,
+    MemoryModule,
   ],
 })
 export class AppModule {}
