@@ -1,16 +1,16 @@
-import { Controller, Get, Post, Body, Param, Query } from "@nestjs/common";
-import { MarketplaceService } from "./marketplace.service";
+import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
+import { MarketplaceService } from './marketplace.service';
 
-@Controller("api/marketplace")
+@Controller('api/marketplace')
 export class MarketplaceController {
   constructor(private readonly marketplaceService: MarketplaceService) {}
 
   @Get()
   findAll(
-    @Query("category") category?: string,
-    @Query("search") search?: string,
-    @Query("skip") skip?: string,
-    @Query("take") take?: string
+    @Query('category') category?: string,
+    @Query('search') search?: string,
+    @Query('skip') skip?: string,
+    @Query('take') take?: string,
   ) {
     return this.marketplaceService.findAll({
       category,
@@ -20,8 +20,8 @@ export class MarketplaceController {
     });
   }
 
-  @Get(":id")
-  findOne(@Param("id") id: string) {
+  @Get(':id')
+  findOne(@Param('id') id: string) {
     return this.marketplaceService.findOne(id);
   }
 

@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common";
-import { LlmService } from "../common/llm";
-import { PrismaService } from "../common/prisma";
+import { Injectable } from '@nestjs/common';
+import { LlmService } from '../common/llm';
+import { PrismaService } from '../common/prisma';
 
 const BUILDER_PROMPTS: Record<string, string> = {
   app: `你是一个专业的移动应用架构师。根据以下配置，生成完整的移动应用代码：
@@ -52,75 +52,84 @@ const BUILDER_PROMPTS: Record<string, string> = {
 export class BuilderService {
   constructor(
     private readonly llm: LlmService,
-    private readonly prisma: PrismaService
+    private readonly prisma: PrismaService,
   ) {}
 
   /**
    * Generate code/config based on project type and user config.
    * Returns the generated text stream async iterable.
    */
-  async *build(projectId: string, userId: string): AsyncGenerator<{ type: "progress" | "done" | "error"; content: string }> {
+  async *build(
+    projectId: string,
+    userId: string,
+  ): AsyncGenerator<{ type: 'progress' | 'done' | 'error'; content: string }> {
     // 1. Load project
     const project = await this.prisma.project.findFirst({
       where: { id: projectId, userId },
     });
     if (!project) {
-      yield { type: "error", content: "项目未找到" };
+      yield { type: 'error', content: '项目未找到' };
       return;
     }
 
     // 2. Mark building
     await this.prisma.project.update({
       where: { id: projectId },
-      data: { status: "building" },
+      data: { status: 'building' },
     });
 
-    yield { type: "progress", content: "正在分析项目配置..." };
+    yield { type: 'progress', content: '正在分析项目配置...' };
 
     // 3. Build prompt
     const template = BUILDER_PROMPTS[project.type] ?? BUILDER_PROMPTS.web;
     const prompt = template
-      .replace("{framework}", String((project.config as any)?.framework ?? "N/A"))
-      .replace("{platform}", String((project.config as any)?.platform ?? "N/A"))
-      .replace("{features}", JSON.stringify((project.config as any)?.features ?? []))
-      .replace("{type}", String((project.config as any)?.type ?? "N/A"))
-      .replace("{scenes}", JSON.stringify((project.config as any)?.scenes ?? []))
-      .replace("{styling}", String((project.config as any)?.styling ?? "N/A"))
-      .replace("{pages}", JSON.stringify((project.config as any)?.pages ?? []))
-      .replace("{name}", project.name)
-      .replace("{description}", project.description)
-      .replace("{capabilities}", JSON.stringify((project.config as any)?.capabilities ?? []))
-      .replace("{systemPrompt}", String((project.config as any)?.systemPrompt ?? ""))
-      .replace("{tools}", JSON.stringify((project.config as any)?.tools ?? []))
-      .replace("{model}", String((project.config as any)?.model ?? "deepseek-v4"));
+      .replace('{framework}', String(project.config?.framework ?? 'N/A'))
+      .replace('{platform}', String(project.config?.platform ?? 'N/A'))
+      .replace('{features}', JSON.stringify(project.config?.features ?? []))
+      .replace('{type}', String(project.config?.type ?? 'N/A'))
+      .replace('{scenes}', JSON.stringify(project.config?.scenes ?? []))
+      .replace('{styling}', String(project.config?.styling ?? 'N/A'))
+      .replace('{pages}', JSON.stringify(project.config?.pages ?? []))
+      .replace('{name}', project.name)
+      .replace('{description}', project.description)
+      .replace(
+        '{capabilities}',
+        JSON.stringify(project.config?.capabilities ?? []),
+      )
+      .replace('{systemPrompt}', String(project.config?.systemPrompt ?? ''))
+      .replace('{tools}', JSON.stringify(project.config?.tools ?? []))
+      .replace('{model}', String(project.config?.model ?? 'deepseek-v4'));
 
-    yield { type: "progress", content: "正在调用 DeepSeek V4 Pro 生成代码..." };
+    yield { type: 'progress', content: '正在调用 DeepSeek V4 Pro 生成代码...' };
 
     // 4. Stream LLM generation
-    let fullOutput = "";
+    let fullOutput = '';
     try {
       for await (const chunk of this.llm.chatStream([
-        { role: "system", content: "你是一个专业代码生成器。只输出代码和配置，不要闲聊。" },
-        { role: "user", content: prompt },
+        {
+          role: 'system',
+          content: '你是一个专业代码生成器。只输出代码和配置，不要闲聊。',
+        },
+        { role: 'user', content: prompt },
       ])) {
         fullOutput += chunk;
-        yield { type: "progress", content: chunk };
+        yield { type: 'progress', content: chunk };
       }
     } catch (err: any) {
       await this.prisma.project.update({
         where: { id: projectId },
-        data: { status: "failed" },
+        data: { status: 'failed' },
       });
-      yield { type: "error", content: `生成失败: ${err.message}` };
+      yield { type: 'error', content: `生成失败: ${err.message}` };
       return;
     }
 
     // 5. Update project with output
     await this.prisma.project.update({
       where: { id: projectId },
-      data: { status: "done", outputUrl: fullOutput },
+      data: { status: 'done', outputUrl: fullOutput },
     });
 
-    yield { type: "done", content: fullOutput };
+    yield { type: 'done', content: fullOutput };
   }
 }

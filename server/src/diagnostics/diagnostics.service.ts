@@ -1,5 +1,5 @@
-import { Injectable } from "@nestjs/common";
-import { LlmService } from "../common/llm";
+import { Injectable } from '@nestjs/common';
+import { LlmService } from '../common/llm';
 
 const DIAGNOSTIC_PROMPTS: Record<string, string> = {
   error: `你是一个编译器错误分析专家。分析以下构建报错日志，给出：
@@ -39,8 +39,8 @@ export class DiagnosticsService {
     const systemPrompt = DIAGNOSTIC_PROMPTS[type] ?? DIAGNOSTIC_PROMPTS.error;
 
     for await (const chunk of this.llm.chatStream([
-      { role: "system", content: systemPrompt },
-      { role: "user", content: input },
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: input },
     ])) {
       yield chunk;
     }

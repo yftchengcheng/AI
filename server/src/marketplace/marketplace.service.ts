@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common";
-import { PrismaService } from "../common/prisma";
-import type { Prisma } from "../../generated/prisma/client.js";
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../common/prisma';
+import type { Prisma } from '../../generated/prisma/client.js';
 
 @Injectable()
 export class MarketplaceService {
@@ -13,17 +13,17 @@ export class MarketplaceService {
     take?: number;
   }) {
     const where: Prisma.MarketplaceToolWhereInput = {
-      status: "approved",
+      status: 'approved',
     };
 
-    if (params.category && params.category !== "all") {
+    if (params.category && params.category !== 'all') {
       where.category = params.category as any;
     }
 
     if (params.search) {
       where.OR = [
-        { name: { contains: params.search, mode: "insensitive" } },
-        { description: { contains: params.search, mode: "insensitive" } },
+        { name: { contains: params.search, mode: 'insensitive' } },
+        { description: { contains: params.search, mode: 'insensitive' } },
       ];
     }
 
@@ -32,7 +32,7 @@ export class MarketplaceService {
         where,
         skip: params.skip ?? 0,
         take: params.take ?? 20,
-        orderBy: { downloads: "desc" },
+        orderBy: { downloads: 'desc' },
       }),
       this.prisma.marketplaceTool.count({ where }),
     ]);

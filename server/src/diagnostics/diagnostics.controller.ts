@@ -1,22 +1,22 @@
-import { Controller, Post, Body, Res } from "@nestjs/common";
-import { Response } from "express";
-import { DiagnosticsService } from "./diagnostics.service";
+import { Controller, Post, Body, Res } from '@nestjs/common';
+import { Response } from 'express';
+import { DiagnosticsService } from './diagnostics.service';
 
-@Controller("api/diagnostics")
+@Controller('api/diagnostics')
 export class DiagnosticsController {
   constructor(private readonly diagnosticsService: DiagnosticsService) {}
 
-  @Post("analyze")
+  @Post('analyze')
   async analyze(
     @Body() body: { type: string; input: string },
-    @Res() res: Response
+    @Res() res: Response,
   ) {
-    res.setHeader("Content-Type", "text/plain; charset=utf-8");
-    res.setHeader("Transfer-Encoding", "chunked");
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    res.setHeader('Transfer-Encoding', 'chunked');
 
     for await (const chunk of this.diagnosticsService.analyze(
       body.type,
-      body.input
+      body.input,
     )) {
       res.write(chunk);
     }

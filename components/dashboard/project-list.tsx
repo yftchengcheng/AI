@@ -42,7 +42,7 @@ export function ProjectList({ projects }: { projects: ToolProject[] }) {
       </div>
       {projects.length === 0 ? (
         <div className="py-12 text-center text-sm text-muted-foreground">
-          还没有项目，点击"创建新工具"开始
+          还没有项目，点击「创建新工具」开始
         </div>
       ) : (
         <div className="divide-y divide-border">

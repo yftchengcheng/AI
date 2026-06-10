@@ -1,8 +1,14 @@
-import { Injectable } from "@nestjs/common";
-import { LlmService } from "../common/llm";
-import { NodeExecutorService } from "./node-executor.service";
+import { Injectable } from '@nestjs/common';
+import { LlmService } from '../common/llm';
+import { NodeExecutorService } from './node-executor.service';
 
-export type WorkflowNodeType = "start" | "llm" | "code" | "knowledge" | "condition" | "end";
+export type WorkflowNodeType =
+  | 'start'
+  | 'llm'
+  | 'code'
+  | 'knowledge'
+  | 'condition'
+  | 'end';
 
 export interface WorkflowNode {
   id: string;
@@ -45,7 +51,11 @@ export class WorkflowEngineService {
   async execute(
     definition: WorkflowDefinition,
     input: Record<string, unknown>,
-    onProgress?: (nodeId: string, status: "running" | "done" | "error", output?: unknown) => void
+    onProgress?: (
+      nodeId: string,
+      status: 'running' | 'done' | 'error',
+      output?: unknown,
+    ) => void,
   ): Promise<{ outputs: Map<string, unknown>; logs: NodeExecutionResult[] }> {
     const { nodes, edges } = definition;
     const outputs = new Map<string, unknown>();
@@ -77,9 +87,9 @@ export class WorkflowEngineService {
     }
 
     // Find start node
-    const startNode = nodes.find(n => n.type === "start");
+    const startNode = nodes.find((n) => n.type === 'start');
     if (!startNode) {
-      throw new Error("Workflow must have a start node");
+      throw new Error('Workflow must have a start node');
     }
 
     // Initialize output with input
@@ -102,21 +112,26 @@ export class WorkflowEngineService {
 
       // Execute current level concurrently
       const levelPromises = currentLevel.map(async (nodeId) => {
-        const node = nodes.find(n => n.id === nodeId);
+        const node = nodes.find((n) => n.id === nodeId);
         if (!node) return;
 
-        onProgress?.(nodeId, "running");
+        onProgress?.(nodeId, 'running');
 
         try {
           const nodeInput = outputs.get(nodeId) || input;
-          const result = await this.nodeExecutor.execute(node.type, node.config, nodeInput, outputs);
+          const result = await this.nodeExecutor.execute(
+            node.type,
+            node.config,
+            nodeInput,
+            outputs,
+          );
 
           outputs.set(nodeId, result.output ?? result);
           logs.push({ nodeId, output: result.output ?? result });
-          onProgress?.(nodeId, "done", result.output ?? result);
+          onProgress?.(nodeId, 'done', result.output ?? result);
         } catch (err: any) {
           logs.push({ nodeId, output: null, error: err.message });
-          onProgress?.(nodeId, "error", err.message);
+          onProgress?.(nodeId, 'error', err.message);
         }
       });
 
@@ -124,7 +139,7 @@ export class WorkflowEngineService {
 
       // Schedule next level, respecting condition branches
       for (const nodeId of currentLevel) {
-        const node = nodes.find(n => n.id === nodeId);
+        const node = nodes.find((n) => n.id === nodeId);
         if (!node) continue;
 
         const metas = edgeMeta.get(nodeId) || [];
@@ -132,10 +147,10 @@ export class WorkflowEngineService {
 
         for (const { target, handle } of metas) {
           // For condition nodes, only follow the matching branch
-          if (node.type === "condition") {
-            if (handle === "true" && nodeOutput === true) {
+          if (node.type === 'condition') {
+            if (handle === 'true' && nodeOutput === true) {
               queue.push(target);
-            } else if (handle === "false" && nodeOutput === false) {
+            } else if (handle === 'false' && nodeOutput === false) {
               queue.push(target);
             }
             // If handle doesn't match, skip this branch

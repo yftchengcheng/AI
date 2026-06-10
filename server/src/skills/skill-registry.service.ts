@@ -1,5 +1,5 @@
-import { Injectable } from "@nestjs/common";
-import { PrismaService } from "../common/prisma";
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../common/prisma';
 
 /**
  * Skill registry — manages runtime state of all 41 built-in skills
@@ -7,7 +7,10 @@ import { PrismaService } from "../common/prisma";
  */
 @Injectable()
 export class SkillRegistryService {
-  private activeSkills = new Map<string, { loadedAt: Date; status: "loaded" | "error"; error?: string }>();
+  private activeSkills = new Map<
+    string,
+    { loadedAt: Date; status: 'loaded' | 'error'; error?: string }
+  >();
 
   constructor(private readonly prisma: PrismaService) {}
 
@@ -17,18 +20,21 @@ export class SkillRegistryService {
    */
   async loadAll(): Promise<number> {
     const skills = await this.prisma.project.findMany({
-      where: { type: "skill" },
+      where: { type: 'skill' },
     });
 
     let count = 0;
     for (const skill of skills) {
       try {
-        this.activeSkills.set(skill.id, { loadedAt: new Date(), status: "loaded" });
+        this.activeSkills.set(skill.id, {
+          loadedAt: new Date(),
+          status: 'loaded',
+        });
         count++;
       } catch (err: any) {
         this.activeSkills.set(skill.id, {
           loadedAt: new Date(),
-          status: "error",
+          status: 'error',
           error: err.message,
         });
       }
@@ -38,13 +44,13 @@ export class SkillRegistryService {
 
   /** Check if a skill is loaded and ready */
   isReady(skillId: string): boolean {
-    return this.activeSkills.get(skillId)?.status === "loaded";
+    return this.activeSkills.get(skillId)?.status === 'loaded';
   }
 
   /** Get all loaded skill IDs */
   getLoaded(): string[] {
     return Array.from(this.activeSkills.entries())
-      .filter(([_, state]) => state.status === "loaded")
+      .filter(([_, state]) => state.status === 'loaded')
       .map(([id]) => id);
   }
 
@@ -53,8 +59,8 @@ export class SkillRegistryService {
     const entries = Array.from(this.activeSkills.values());
     return {
       total: entries.length,
-      loaded: entries.filter(e => e.status === "loaded").length,
-      errors: entries.filter(e => e.status === "error").length,
+      loaded: entries.filter((e) => e.status === 'loaded').length,
+      errors: entries.filter((e) => e.status === 'error').length,
     };
   }
 }

@@ -1,7 +1,7 @@
-import { Injectable } from "@nestjs/common";
-import { PrismaService } from "../common/prisma";
-import { EmbeddingService } from "./embedding.service";
-import { VectorStoreService } from "./vector-store.service";
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../common/prisma';
+import { EmbeddingService } from './embedding.service';
+import { VectorStoreService } from './vector-store.service';
 
 /**
  * Document service — handles upload, parsing, chunking, and embedding pipeline.
@@ -15,7 +15,7 @@ export class DocumentService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly embedding: EmbeddingService,
-    private readonly vectorStore: VectorStoreService
+    private readonly vectorStore: VectorStoreService,
   ) {}
 
   /**
@@ -29,7 +29,7 @@ export class DocumentService {
     knowledgeBaseId: string,
     name: string,
     content: string,
-    type: string = "txt"
+    type: string = 'txt',
   ): Promise<{ documentId: string; chunkCount: number }> {
     // Create document record
     const doc = await this.prisma.$executeRawUnsafe(
@@ -38,12 +38,12 @@ export class DocumentService {
        RETURNING id`,
       knowledgeBaseId,
       name,
-      type
+      type,
     );
 
     // TODO: fix raw query to return id
     // For now, generate ID client-side
-    const crypto = await import("crypto");
+    const crypto = await import('crypto');
     const documentId = crypto.randomUUID();
 
     await this.prisma.$executeRawUnsafe(
@@ -52,7 +52,7 @@ export class DocumentService {
       documentId,
       knowledgeBaseId,
       name,
-      type
+      type,
     );
 
     // Parse content
@@ -68,7 +68,7 @@ export class DocumentService {
     // Update document status
     await this.prisma.$executeRawUnsafe(
       `UPDATE documents SET status = 'ready' WHERE id = $1`,
-      documentId
+      documentId,
     );
 
     return { documentId, chunkCount: chunks.length };
@@ -81,7 +81,7 @@ export class DocumentService {
     await this.vectorStore.deleteByDocument(documentId);
     await this.prisma.$executeRawUnsafe(
       `DELETE FROM documents WHERE id = $1`,
-      documentId
+      documentId,
     );
   }
 
@@ -104,15 +104,15 @@ export class DocumentService {
    * For MVP, handles plain text and simple markdown stripping.
    */
   private extractText(content: string, type: string): string {
-    if (type === "md" || type === "markdown") {
+    if (type === 'md' || type === 'markdown') {
       // Simple markdown → plain text conversion
       return content
-        .replace(/^#{1,6}\s+/gm, "")     // strip headings
-        .replace(/\*\*(.+?)\*\*/g, "$1")  // bold
-        .replace(/\*(.+?)\*/g, "$1")      // italic
-        .replace(/`{1,3}[^`]*`{1,3}/g, "") // code blocks
-        .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1") // links
-        .replace(/!\[.*?\]\([^)]+\)/g, "") // images
+        .replace(/^#{1,6}\s+/gm, '') // strip headings
+        .replace(/\*\*(.+?)\*\*/g, '$1') // bold
+        .replace(/\*(.+?)\*/g, '$1') // italic
+        .replace(/`{1,3}[^`]*`{1,3}/g, '') // code blocks
+        .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // links
+        .replace(/!\[.*?\]\([^)]+\)/g, '') // images
         .trim();
     }
     // Default: plain text

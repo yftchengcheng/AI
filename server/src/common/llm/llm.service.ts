@@ -1,13 +1,14 @@
-import { Injectable } from "@nestjs/common";
-import { createOpenAI } from "@ai-sdk/openai";
+import { Injectable } from '@nestjs/common';
+import { createOpenAI } from '@ai-sdk/openai';
 
 @Injectable()
 export class LlmService {
   private client: ReturnType<typeof createOpenAI>;
 
   constructor() {
-    const apiKey = process.env.DEEPSEEK_API_KEY || "sk-placeholder";
-    const baseURL = process.env.DEEPSEEK_BASE_URL || "https://api.deepseek.com/v1";
+    const apiKey = process.env.DEEPSEEK_API_KEY || 'sk-placeholder';
+    const baseURL =
+      process.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com/v1';
 
     this.client = createOpenAI({
       apiKey,
@@ -28,11 +29,11 @@ export class LlmService {
    * Returns the generated text content.
    */
   async chat(
-    messages: { role: "system" | "user" | "assistant"; content: string }[],
-    options?: { maxTokens?: number; temperature?: number }
+    messages: { role: 'system' | 'user' | 'assistant'; content: string }[],
+    options?: { maxTokens?: number; temperature?: number },
   ): Promise<string> {
-    const model = this.client("deepseek-chat");
-    const { generateText } = await import("ai");
+    const model = this.client('deepseek-chat');
+    const { generateText } = await import('ai');
     const result = await generateText({
       model,
       messages,
@@ -46,10 +47,10 @@ export class LlmService {
    * Streaming chat — for real-time Builder / Diagnostics output.
    */
   async *chatStream(
-    messages: { role: "system" | "user" | "assistant"; content: string }[]
+    messages: { role: 'system' | 'user' | 'assistant'; content: string }[],
   ): AsyncGenerator<string> {
-    const model = this.client("deepseek-chat");
-    const { streamText } = await import("ai");
+    const model = this.client('deepseek-chat');
+    const { streamText } = await import('ai');
     const { textStream } = streamText({
       model,
       messages,

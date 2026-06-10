@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable } from '@nestjs/common';
 
 /**
  * Embedding service — uses DeepSeek V4 Pro's embedding API to generate
@@ -13,8 +13,9 @@ export class EmbeddingService {
   private readonly baseUrl: string;
 
   constructor() {
-    this.apiKey = process.env.DEEPSEEK_API_KEY || "";
-    this.baseUrl = process.env.DEEPSEEK_BASE_URL || "https://api.deepseek.com/v1";
+    this.apiKey = process.env.DEEPSEEK_API_KEY || '';
+    this.baseUrl =
+      process.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com/v1';
   }
 
   /**
@@ -24,19 +25,19 @@ export class EmbeddingService {
   async embed(texts: string[]): Promise<number[][]> {
     if (!this.apiKey) {
       // Fallback: return zero vectors for development without API key
-      console.warn("[embedding] No DEEPSEEK_API_KEY set, using zero vectors");
+      console.warn('[embedding] No DEEPSEEK_API_KEY set, using zero vectors');
       return texts.map(() => new Array(1536).fill(0));
     }
 
     try {
       const res = await fetch(`${this.baseUrl}/embeddings`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${this.apiKey}`,
         },
         body: JSON.stringify({
-          model: "deepseek-chat",
+          model: 'deepseek-chat',
           input: texts,
         }),
       });
@@ -46,7 +47,7 @@ export class EmbeddingService {
         throw new Error(`Embedding API error: ${err}`);
       }
 
-      const json = await res.json() as {
+      const json = (await res.json()) as {
         data: { embedding: number[]; index: number }[];
       };
       return json.data

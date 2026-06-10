@@ -1,5 +1,5 @@
-import { Injectable } from "@nestjs/common";
-import { PrismaService } from "../common/prisma";
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../common/prisma';
 
 /**
  * Simple PGVector-based vector store.
@@ -18,7 +18,7 @@ export class VectorStoreService {
     documentId: string,
     chunkIndex: number,
     content: string,
-    embedding: number[]
+    embedding: number[],
   ): Promise<void> {
     await this.prisma.$executeRawUnsafe(
       `INSERT INTO document_chunks (document_id, chunk_index, content, embedding)
@@ -28,7 +28,7 @@ export class VectorStoreService {
       documentId,
       chunkIndex,
       content,
-      `[${embedding.join(",")}]`
+      `[${embedding.join(',')}]`,
     );
   }
 
@@ -38,15 +38,22 @@ export class VectorStoreService {
    */
   async search(
     embedding: number[],
-    options: { topK?: number; knowledgeBaseId?: string } = {}
-  ): Promise<{ content: string; similarity: number; documentId: string; documentName: string }[]> {
+    options: { topK?: number; knowledgeBaseId?: string } = {},
+  ): Promise<
+    {
+      content: string;
+      similarity: number;
+      documentId: string;
+      documentName: string;
+    }[]
+  > {
     const { topK = 5, knowledgeBaseId } = options;
 
-    const vectorStr = `[${embedding.join(",")}]`;
+    const vectorStr = `[${embedding.join(',')}]`;
 
     const kbFilter = knowledgeBaseId
       ? `AND d.knowledge_base_id = '${knowledgeBaseId}'`
-      : "";
+      : '';
 
     try {
       const rows = await this.prisma.$queryRawUnsafe(
@@ -61,7 +68,7 @@ export class VectorStoreService {
          ORDER BY dc.embedding <=> $1::vector
          LIMIT $2`,
         vectorStr,
-        topK
+        topK,
       );
       return (rows as any[]).map((r: any) => ({
         content: r.content,
@@ -71,7 +78,9 @@ export class VectorStoreService {
       }));
     } catch {
       // pgvector not available — return empty
-      console.warn("[vector-store] pgvector not available, search returned empty");
+      console.warn(
+        '[vector-store] pgvector not available, search returned empty',
+      );
       return [];
     }
   }
@@ -82,7 +91,7 @@ export class VectorStoreService {
   async deleteByDocument(documentId: string): Promise<void> {
     await this.prisma.$executeRawUnsafe(
       `DELETE FROM document_chunks WHERE document_id = $1`,
-      documentId
+      documentId,
     );
   }
 }

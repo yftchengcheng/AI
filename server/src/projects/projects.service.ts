@@ -1,8 +1,8 @@
-import { Injectable } from "@nestjs/common";
-import { PrismaService } from "../common/prisma";
-import type { Prisma } from "../../generated/prisma/client.js";
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../common/prisma';
+import type { Prisma } from '../../generated/prisma/client.js';
 
-import("../../generated/prisma/client.js");
+import('../../generated/prisma/client.js');
 
 @Injectable()
 export class ProjectsService {
@@ -11,7 +11,7 @@ export class ProjectsService {
   findAll(userId: string) {
     return this.prisma.project.findMany({
       where: { userId },
-      orderBy: { updatedAt: "desc" },
+      orderBy: { updatedAt: 'desc' },
     });
   }
 
@@ -37,7 +37,7 @@ export class ProjectsService {
   async publish(projectId: string) {
     const project = await this.prisma.project.update({
       where: { id: projectId },
-      data: { visibility: "public" },
+      data: { visibility: 'public' },
     });
 
     // Upsert marketplace tool
@@ -54,10 +54,10 @@ export class ProjectsService {
         projectId: project.id,
         userId: project.userId,
         name: project.name,
-        description: project.description || "",
+        description: project.description || '',
         category: project.type,
         tags: [],
-        status: "pending",
+        status: 'pending',
       },
     });
 

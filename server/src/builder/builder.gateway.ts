@@ -4,11 +4,11 @@ import {
   SubscribeMessage,
   OnGatewayConnection,
   OnGatewayDisconnect,
-} from "@nestjs/websockets";
-import { Server, Socket } from "socket.io";
-import { BuilderService } from "./builder.service";
+} from '@nestjs/websockets';
+import { Server, Socket } from 'socket.io';
+import { BuilderService } from './builder.service';
 
-@WebSocketGateway({ namespace: "/ws/build", cors: { origin: "*" } })
+@WebSocketGateway({ namespace: '/ws/build', cors: { origin: '*' } })
 export class BuilderGateway
   implements OnGatewayConnection, OnGatewayDisconnect
 {
@@ -25,10 +25,10 @@ export class BuilderGateway
     console.log(`[WS] Client disconnected: ${client.id}`);
   }
 
-  @SubscribeMessage("build:start")
+  @SubscribeMessage('build:start')
   async handleBuildStart(
     client: Socket,
-    payload: { projectId: string; userId: string }
+    payload: { projectId: string; userId: string },
   ) {
     const room = `build:${payload.projectId}`;
     client.join(room);
@@ -36,12 +36,12 @@ export class BuilderGateway
     try {
       for await (const event of this.builderService.build(
         payload.projectId,
-        payload.userId
+        payload.userId,
       )) {
         this.server.to(room).emit(event.type, event.content);
       }
     } catch (err: any) {
-      this.server.to(room).emit("error", err.message);
+      this.server.to(room).emit('error', err.message);
     }
   }
 }

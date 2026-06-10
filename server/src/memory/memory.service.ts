@@ -1,14 +1,14 @@
-import { Injectable } from "@nestjs/common";
-import { PrismaService } from "../common/prisma";
-import { EmbeddingService } from "../knowledge/embedding.service";
-import { VectorStoreService } from "../knowledge/vector-store.service";
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../common/prisma';
+import { EmbeddingService } from '../knowledge/embedding.service';
+import { VectorStoreService } from '../knowledge/vector-store.service';
 
 export interface MemoryEntry {
   id: string;
   userId: string;
   agentId?: string;
-  type: "session" | "long_term";
-  role: "user" | "assistant" | "system";
+  type: 'session' | 'long_term';
+  role: 'user' | 'assistant' | 'system';
   content: string;
   embedding?: number[];
   createdAt: Date;
@@ -25,16 +25,24 @@ export interface MemoryEntry {
 @Injectable()
 export class MemoryService {
   // Short-term memory: sessionId → message list
-  private shortTerm = new Map<string, { role: string; content: string; timestamp: number }[]>();
+  private shortTerm = new Map<
+    string,
+    { role: string; content: string; timestamp: number }[]
+  >();
 
   constructor(
     private readonly prisma: PrismaService,
     private readonly embedding: EmbeddingService,
-    private readonly vectorStore: VectorStoreService
+    private readonly vectorStore: VectorStoreService,
   ) {}
 
   /** Add a message to short-term memory */
-  addToShortTerm(sessionId: string, role: string, content: string, maxTurns = 20): void {
+  addToShortTerm(
+    sessionId: string,
+    role: string,
+    content: string,
+    maxTurns = 20,
+  ): void {
     const history = this.shortTerm.get(sessionId) || [];
     history.push({ role, content, timestamp: Date.now() });
 
@@ -66,7 +74,7 @@ export class MemoryService {
   async addToLongTerm(
     userId: string,
     content: string,
-    options: { agentId?: string; type?: string } = {}
+    options: { agentId?: string; type?: string } = {},
   ): Promise<void> {
     const embedding = await this.embedding.embedSingle(content);
 
@@ -75,9 +83,9 @@ export class MemoryService {
        VALUES (gen_random_uuid()::text, $1, $2, $3, 'system', $4, $5::vector, NOW())`,
       userId,
       options.agentId || null,
-      options.type || "long_term",
+      options.type || 'long_term',
       content,
-      `[${embedding.join(",")}]`
+      `[${embedding.join(',')}]`,
     );
   }
 
@@ -85,9 +93,13 @@ export class MemoryService {
    * Retrieve relevant long-term memories for a query.
    * Uses semantic search via PGVector.
    */
-  async recall(userId: string, query: string, topK = 5): Promise<{ content: string; similarity: number }[]> {
+  async recall(
+    userId: string,
+    query: string,
+    topK = 5,
+  ): Promise<{ content: string; similarity: number }[]> {
     const queryEmbedding = await this.embedding.embedSingle(query);
-    const vectorStr = `[${queryEmbedding.join(",")}]`;
+    const vectorStr = `[${queryEmbedding.join(',')}]`;
 
     try {
       const rows = await this.prisma.$queryRawUnsafe(
@@ -98,7 +110,7 @@ export class MemoryService {
          LIMIT $3`,
         vectorStr,
         userId,
-        topK
+        topK,
       );
       return rows.map((r: any) => ({
         content: r.content,
@@ -118,7 +130,7 @@ export class MemoryService {
     userId: string,
     sessionId: string,
     currentMessage: string,
-    options: { maxShortTurns?: number; maxLongRecall?: number } = {}
+    options: { maxShortTurns?: number; maxLongRecall?: number } = {},
   ): Promise<{
     systemContext: string;
     messages: { role: string; content: string }[];
@@ -126,16 +138,22 @@ export class MemoryService {
     const shortTerm = this.getShortTerm(sessionId);
     const recent = shortTerm.slice(-(options.maxShortTurns || 10));
 
-    const longMemories = await this.recall(userId, currentMessage, options.maxLongRecall || 3);
+    const longMemories = await this.recall(
+      userId,
+      currentMessage,
+      options.maxLongRecall || 3,
+    );
 
-    let systemContext = "";
+    let systemContext = '';
     if (longMemories.length > 0) {
-      systemContext = "相关历史记忆:\n" + longMemories.map((m, i) => `${i + 1}. ${m.content}`).join("\n");
+      systemContext =
+        '相关历史记忆:\n' +
+        longMemories.map((m, i) => `${i + 1}. ${m.content}`).join('\n');
     }
 
     return {
       systemContext,
-      messages: recent.map(m => ({ role: m.role, content: m.content })),
+      messages: recent.map((m) => ({ role: m.role, content: m.content })),
     };
   }
 
@@ -143,7 +161,7 @@ export class MemoryService {
   async deleteMemory(entryId: string): Promise<void> {
     await this.prisma.$executeRawUnsafe(
       `DELETE FROM memory_entries WHERE id = $1`,
-      entryId
+      entryId,
     );
   }
 
@@ -156,7 +174,7 @@ export class MemoryService {
          WHERE user_id = $1
          ORDER BY created_at DESC
          LIMIT 50`,
-        userId
+        userId,
       );
       return rows.map((r: any) => ({
         id: r.id,

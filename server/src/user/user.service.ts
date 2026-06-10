@@ -1,13 +1,13 @@
-import { Injectable, ConflictException } from "@nestjs/common";
-import { PrismaService } from "../common/prisma";
-import { AuthService } from "../common/auth";
-import type { Prisma } from "../../generated/prisma/client.js";
+import { Injectable, ConflictException } from '@nestjs/common';
+import { PrismaService } from '../common/prisma';
+import { AuthService } from '../common/auth';
+import type { Prisma } from '../../generated/prisma/client.js';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
   ) {}
 
   async create(data: { email: string; username: string; password: string }) {
@@ -15,7 +15,7 @@ export class UserService {
       where: { email: data.email },
     });
     if (existing) {
-      throw new ConflictException("邮箱已被注册");
+      throw new ConflictException('邮箱已被注册');
     }
 
     const hashedPassword = await this.authService.hash(data.password);
