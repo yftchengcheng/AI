@@ -13,6 +13,7 @@ export type ProjectMinAggregateOutputType = {
     name: string | null;
     type: $Enums.ToolType | null;
     status: $Enums.ProjectStatus | null;
+    visibility: $Enums.ProjectVisibility | null;
     description: string | null;
     outputUrl: string | null;
     createdAt: Date | null;
@@ -24,6 +25,7 @@ export type ProjectMaxAggregateOutputType = {
     name: string | null;
     type: $Enums.ToolType | null;
     status: $Enums.ProjectStatus | null;
+    visibility: $Enums.ProjectVisibility | null;
     description: string | null;
     outputUrl: string | null;
     createdAt: Date | null;
@@ -35,6 +37,7 @@ export type ProjectCountAggregateOutputType = {
     name: number;
     type: number;
     status: number;
+    visibility: number;
     description: number;
     config: number;
     outputUrl: number;
@@ -48,6 +51,7 @@ export type ProjectMinAggregateInputType = {
     name?: true;
     type?: true;
     status?: true;
+    visibility?: true;
     description?: true;
     outputUrl?: true;
     createdAt?: true;
@@ -59,6 +63,7 @@ export type ProjectMaxAggregateInputType = {
     name?: true;
     type?: true;
     status?: true;
+    visibility?: true;
     description?: true;
     outputUrl?: true;
     createdAt?: true;
@@ -70,6 +75,7 @@ export type ProjectCountAggregateInputType = {
     name?: true;
     type?: true;
     status?: true;
+    visibility?: true;
     description?: true;
     config?: true;
     outputUrl?: true;
@@ -107,6 +113,7 @@ export type ProjectGroupByOutputType = {
     name: string;
     type: $Enums.ToolType;
     status: $Enums.ProjectStatus;
+    visibility: $Enums.ProjectVisibility;
     description: string;
     config: runtime.JsonValue;
     outputUrl: string | null;
@@ -128,6 +135,7 @@ export type ProjectWhereInput = {
     name?: Prisma.StringFilter<"Project"> | string;
     type?: Prisma.EnumToolTypeFilter<"Project"> | $Enums.ToolType;
     status?: Prisma.EnumProjectStatusFilter<"Project"> | $Enums.ProjectStatus;
+    visibility?: Prisma.EnumProjectVisibilityFilter<"Project"> | $Enums.ProjectVisibility;
     description?: Prisma.StringFilter<"Project"> | string;
     config?: Prisma.JsonFilter<"Project">;
     outputUrl?: Prisma.StringNullableFilter<"Project"> | string | null;
@@ -142,6 +150,7 @@ export type ProjectOrderByWithRelationInput = {
     name?: Prisma.SortOrder;
     type?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
+    visibility?: Prisma.SortOrder;
     description?: Prisma.SortOrder;
     config?: Prisma.SortOrder;
     outputUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -159,6 +168,7 @@ export type ProjectWhereUniqueInput = Prisma.AtLeast<{
     name?: Prisma.StringFilter<"Project"> | string;
     type?: Prisma.EnumToolTypeFilter<"Project"> | $Enums.ToolType;
     status?: Prisma.EnumProjectStatusFilter<"Project"> | $Enums.ProjectStatus;
+    visibility?: Prisma.EnumProjectVisibilityFilter<"Project"> | $Enums.ProjectVisibility;
     description?: Prisma.StringFilter<"Project"> | string;
     config?: Prisma.JsonFilter<"Project">;
     outputUrl?: Prisma.StringNullableFilter<"Project"> | string | null;
@@ -173,6 +183,7 @@ export type ProjectOrderByWithAggregationInput = {
     name?: Prisma.SortOrder;
     type?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
+    visibility?: Prisma.SortOrder;
     description?: Prisma.SortOrder;
     config?: Prisma.SortOrder;
     outputUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -191,6 +202,7 @@ export type ProjectScalarWhereWithAggregatesInput = {
     name?: Prisma.StringWithAggregatesFilter<"Project"> | string;
     type?: Prisma.EnumToolTypeWithAggregatesFilter<"Project"> | $Enums.ToolType;
     status?: Prisma.EnumProjectStatusWithAggregatesFilter<"Project"> | $Enums.ProjectStatus;
+    visibility?: Prisma.EnumProjectVisibilityWithAggregatesFilter<"Project"> | $Enums.ProjectVisibility;
     description?: Prisma.StringWithAggregatesFilter<"Project"> | string;
     config?: Prisma.JsonWithAggregatesFilter<"Project">;
     outputUrl?: Prisma.StringNullableWithAggregatesFilter<"Project"> | string | null;
@@ -202,6 +214,7 @@ export type ProjectCreateInput = {
     name: string;
     type: $Enums.ToolType;
     status?: $Enums.ProjectStatus;
+    visibility?: $Enums.ProjectVisibility;
     description?: string;
     config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
     outputUrl?: string | null;
@@ -216,6 +229,7 @@ export type ProjectUncheckedCreateInput = {
     name: string;
     type: $Enums.ToolType;
     status?: $Enums.ProjectStatus;
+    visibility?: $Enums.ProjectVisibility;
     description?: string;
     config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
     outputUrl?: string | null;
@@ -228,6 +242,7 @@ export type ProjectUpdateInput = {
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     type?: Prisma.EnumToolTypeFieldUpdateOperationsInput | $Enums.ToolType;
     status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus;
+    visibility?: Prisma.EnumProjectVisibilityFieldUpdateOperationsInput | $Enums.ProjectVisibility;
     description?: Prisma.StringFieldUpdateOperationsInput | string;
     config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
     outputUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -242,6 +257,7 @@ export type ProjectUncheckedUpdateInput = {
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     type?: Prisma.EnumToolTypeFieldUpdateOperationsInput | $Enums.ToolType;
     status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus;
+    visibility?: Prisma.EnumProjectVisibilityFieldUpdateOperationsInput | $Enums.ProjectVisibility;
     description?: Prisma.StringFieldUpdateOperationsInput | string;
     config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
     outputUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -255,6 +271,7 @@ export type ProjectCreateManyInput = {
     name: string;
     type: $Enums.ToolType;
     status?: $Enums.ProjectStatus;
+    visibility?: $Enums.ProjectVisibility;
     description?: string;
     config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
     outputUrl?: string | null;
@@ -266,6 +283,7 @@ export type ProjectUpdateManyMutationInput = {
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     type?: Prisma.EnumToolTypeFieldUpdateOperationsInput | $Enums.ToolType;
     status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus;
+    visibility?: Prisma.EnumProjectVisibilityFieldUpdateOperationsInput | $Enums.ProjectVisibility;
     description?: Prisma.StringFieldUpdateOperationsInput | string;
     config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
     outputUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -278,6 +296,7 @@ export type ProjectUncheckedUpdateManyInput = {
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     type?: Prisma.EnumToolTypeFieldUpdateOperationsInput | $Enums.ToolType;
     status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus;
+    visibility?: Prisma.EnumProjectVisibilityFieldUpdateOperationsInput | $Enums.ProjectVisibility;
     description?: Prisma.StringFieldUpdateOperationsInput | string;
     config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
     outputUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -298,6 +317,7 @@ export type ProjectCountOrderByAggregateInput = {
     name?: Prisma.SortOrder;
     type?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
+    visibility?: Prisma.SortOrder;
     description?: Prisma.SortOrder;
     config?: Prisma.SortOrder;
     outputUrl?: Prisma.SortOrder;
@@ -310,6 +330,7 @@ export type ProjectMaxOrderByAggregateInput = {
     name?: Prisma.SortOrder;
     type?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
+    visibility?: Prisma.SortOrder;
     description?: Prisma.SortOrder;
     outputUrl?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
@@ -321,6 +342,7 @@ export type ProjectMinOrderByAggregateInput = {
     name?: Prisma.SortOrder;
     type?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
+    visibility?: Prisma.SortOrder;
     description?: Prisma.SortOrder;
     outputUrl?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
@@ -374,6 +396,9 @@ export type EnumToolTypeFieldUpdateOperationsInput = {
 export type EnumProjectStatusFieldUpdateOperationsInput = {
     set?: $Enums.ProjectStatus;
 };
+export type EnumProjectVisibilityFieldUpdateOperationsInput = {
+    set?: $Enums.ProjectVisibility;
+};
 export type ProjectCreateNestedOneWithoutMarketplaceToolInput = {
     create?: Prisma.XOR<Prisma.ProjectCreateWithoutMarketplaceToolInput, Prisma.ProjectUncheckedCreateWithoutMarketplaceToolInput>;
     connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutMarketplaceToolInput;
@@ -391,6 +416,7 @@ export type ProjectCreateWithoutUserInput = {
     name: string;
     type: $Enums.ToolType;
     status?: $Enums.ProjectStatus;
+    visibility?: $Enums.ProjectVisibility;
     description?: string;
     config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
     outputUrl?: string | null;
@@ -403,6 +429,7 @@ export type ProjectUncheckedCreateWithoutUserInput = {
     name: string;
     type: $Enums.ToolType;
     status?: $Enums.ProjectStatus;
+    visibility?: $Enums.ProjectVisibility;
     description?: string;
     config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
     outputUrl?: string | null;
@@ -440,6 +467,7 @@ export type ProjectScalarWhereInput = {
     name?: Prisma.StringFilter<"Project"> | string;
     type?: Prisma.EnumToolTypeFilter<"Project"> | $Enums.ToolType;
     status?: Prisma.EnumProjectStatusFilter<"Project"> | $Enums.ProjectStatus;
+    visibility?: Prisma.EnumProjectVisibilityFilter<"Project"> | $Enums.ProjectVisibility;
     description?: Prisma.StringFilter<"Project"> | string;
     config?: Prisma.JsonFilter<"Project">;
     outputUrl?: Prisma.StringNullableFilter<"Project"> | string | null;
@@ -451,6 +479,7 @@ export type ProjectCreateWithoutMarketplaceToolInput = {
     name: string;
     type: $Enums.ToolType;
     status?: $Enums.ProjectStatus;
+    visibility?: $Enums.ProjectVisibility;
     description?: string;
     config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
     outputUrl?: string | null;
@@ -464,6 +493,7 @@ export type ProjectUncheckedCreateWithoutMarketplaceToolInput = {
     name: string;
     type: $Enums.ToolType;
     status?: $Enums.ProjectStatus;
+    visibility?: $Enums.ProjectVisibility;
     description?: string;
     config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
     outputUrl?: string | null;
@@ -488,6 +518,7 @@ export type ProjectUpdateWithoutMarketplaceToolInput = {
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     type?: Prisma.EnumToolTypeFieldUpdateOperationsInput | $Enums.ToolType;
     status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus;
+    visibility?: Prisma.EnumProjectVisibilityFieldUpdateOperationsInput | $Enums.ProjectVisibility;
     description?: Prisma.StringFieldUpdateOperationsInput | string;
     config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
     outputUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -501,6 +532,7 @@ export type ProjectUncheckedUpdateWithoutMarketplaceToolInput = {
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     type?: Prisma.EnumToolTypeFieldUpdateOperationsInput | $Enums.ToolType;
     status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus;
+    visibility?: Prisma.EnumProjectVisibilityFieldUpdateOperationsInput | $Enums.ProjectVisibility;
     description?: Prisma.StringFieldUpdateOperationsInput | string;
     config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
     outputUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -512,6 +544,7 @@ export type ProjectCreateManyUserInput = {
     name: string;
     type: $Enums.ToolType;
     status?: $Enums.ProjectStatus;
+    visibility?: $Enums.ProjectVisibility;
     description?: string;
     config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
     outputUrl?: string | null;
@@ -523,6 +556,7 @@ export type ProjectUpdateWithoutUserInput = {
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     type?: Prisma.EnumToolTypeFieldUpdateOperationsInput | $Enums.ToolType;
     status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus;
+    visibility?: Prisma.EnumProjectVisibilityFieldUpdateOperationsInput | $Enums.ProjectVisibility;
     description?: Prisma.StringFieldUpdateOperationsInput | string;
     config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
     outputUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -535,6 +569,7 @@ export type ProjectUncheckedUpdateWithoutUserInput = {
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     type?: Prisma.EnumToolTypeFieldUpdateOperationsInput | $Enums.ToolType;
     status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus;
+    visibility?: Prisma.EnumProjectVisibilityFieldUpdateOperationsInput | $Enums.ProjectVisibility;
     description?: Prisma.StringFieldUpdateOperationsInput | string;
     config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
     outputUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -547,6 +582,7 @@ export type ProjectUncheckedUpdateManyWithoutUserInput = {
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     type?: Prisma.EnumToolTypeFieldUpdateOperationsInput | $Enums.ToolType;
     status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus;
+    visibility?: Prisma.EnumProjectVisibilityFieldUpdateOperationsInput | $Enums.ProjectVisibility;
     description?: Prisma.StringFieldUpdateOperationsInput | string;
     config?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
     outputUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -559,6 +595,7 @@ export type ProjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     name?: boolean;
     type?: boolean;
     status?: boolean;
+    visibility?: boolean;
     description?: boolean;
     config?: boolean;
     outputUrl?: boolean;
@@ -573,6 +610,7 @@ export type ProjectSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
     name?: boolean;
     type?: boolean;
     status?: boolean;
+    visibility?: boolean;
     description?: boolean;
     config?: boolean;
     outputUrl?: boolean;
@@ -586,6 +624,7 @@ export type ProjectSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
     name?: boolean;
     type?: boolean;
     status?: boolean;
+    visibility?: boolean;
     description?: boolean;
     config?: boolean;
     outputUrl?: boolean;
@@ -599,13 +638,14 @@ export type ProjectSelectScalar = {
     name?: boolean;
     type?: boolean;
     status?: boolean;
+    visibility?: boolean;
     description?: boolean;
     config?: boolean;
     outputUrl?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
 };
-export type ProjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "type" | "status" | "description" | "config" | "outputUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["project"]>;
+export type ProjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "type" | "status" | "visibility" | "description" | "config" | "outputUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["project"]>;
 export type ProjectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     marketplaceTool?: boolean | Prisma.Project$marketplaceToolArgs<ExtArgs>;
@@ -628,6 +668,7 @@ export type $ProjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
         name: string;
         type: $Enums.ToolType;
         status: $Enums.ProjectStatus;
+        visibility: $Enums.ProjectVisibility;
         description: string;
         config: runtime.JsonValue;
         outputUrl: string | null;
@@ -697,6 +738,7 @@ export interface ProjectFieldRefs {
     readonly name: Prisma.FieldRef<"Project", 'String'>;
     readonly type: Prisma.FieldRef<"Project", 'ToolType'>;
     readonly status: Prisma.FieldRef<"Project", 'ProjectStatus'>;
+    readonly visibility: Prisma.FieldRef<"Project", 'ProjectVisibility'>;
     readonly description: Prisma.FieldRef<"Project", 'String'>;
     readonly config: Prisma.FieldRef<"Project", 'Json'>;
     readonly outputUrl: Prisma.FieldRef<"Project", 'String'>;

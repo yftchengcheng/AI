@@ -45,6 +45,9 @@ let ProjectsController = class ProjectsController {
     remove(id) {
         return this.projectsService.remove(id);
     }
+    async publish(id) {
+        return this.projectsService.publish(id);
+    }
 };
 exports.ProjectsController = ProjectsController;
 __decorate([
@@ -82,6 +85,13 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], ProjectsController.prototype, "remove", null);
+__decorate([
+    (0, common_1.Post)(":id/publish"),
+    __param(0, (0, common_1.Param)("id")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], ProjectsController.prototype, "publish", null);
 exports.ProjectsController = ProjectsController = __decorate([
     (0, common_1.Controller)("api/projects"),
     __metadata("design:paramtypes", [projects_service_1.ProjectsService])

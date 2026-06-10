@@ -16,4 +16,8 @@ export declare class ProjectsController {
         config?: object;
     }): any;
     remove(id: string): any;
+    publish(id: string): Promise<{
+        project: any;
+        marketplaceTool: any;
+    }>;
 }

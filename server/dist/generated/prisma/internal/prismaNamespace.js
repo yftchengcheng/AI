@@ -93,6 +93,7 @@ exports.ProjectScalarFieldEnum = {
     name: 'name',
     type: 'type',
     status: 'status',
+    visibility: 'visibility',
     description: 'description',
     config: 'config',
     outputUrl: 'outputUrl',

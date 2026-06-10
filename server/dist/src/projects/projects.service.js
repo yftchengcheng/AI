@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProjectsService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_1 = require("../common/prisma");
+import("../../generated/prisma/client.js");
 let ProjectsService = class ProjectsService {
     prisma;
     constructor(prisma) {
@@ -36,6 +37,30 @@ let ProjectsService = class ProjectsService {
     }
     remove(id) {
         return this.prisma.project.delete({ where: { id } });
+    }
+    async publish(projectId) {
+        const project = await this.prisma.project.update({
+            where: { id: projectId },
+            data: { visibility: "public" },
+        });
+        const existing = await this.prisma.marketplaceTool.findUnique({
+            where: { projectId },
+        });
+        if (existing) {
+            return { project, marketplaceTool: existing };
+        }
+        const tool = await this.prisma.marketplaceTool.create({
+            data: {
+                projectId: project.id,
+                userId: project.userId,
+                name: project.name,
+                description: project.description || "",
+                category: project.type,
+                tags: [],
+                status: "pending",
+            },
+        });
+        return { project, marketplaceTool: tool };
     }
 };
 exports.ProjectsService = ProjectsService;

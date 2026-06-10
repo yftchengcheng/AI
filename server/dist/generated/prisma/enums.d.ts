@@ -1,3 +1,8 @@
+export declare const ProjectVisibility: {
+    readonly private: "private";
+    readonly public: "public";
+};
+export type ProjectVisibility = (typeof ProjectVisibility)[keyof typeof ProjectVisibility];
 export declare const ToolType: {
     readonly app: "app";
     readonly miniapp: "miniapp";

@@ -9,6 +9,14 @@
 * 🟢 You can import this file directly.
 */
 
+export const ProjectVisibility = {
+  private: 'private',
+  public: 'public'
+} as const
+
+export type ProjectVisibility = (typeof ProjectVisibility)[keyof typeof ProjectVisibility]
+
+
 export const ToolType = {
   app: 'app',
   miniapp: 'miniapp',

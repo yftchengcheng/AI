@@ -602,6 +602,7 @@ export declare const ProjectScalarFieldEnum: {
     readonly name: "name";
     readonly type: "type";
     readonly status: "status";
+    readonly visibility: "visibility";
     readonly description: "description";
     readonly config: "config";
     readonly outputUrl: "outputUrl";
@@ -673,6 +674,8 @@ export type EnumToolTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 export type ListEnumToolTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ToolType[]'>;
 export type EnumProjectStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProjectStatus'>;
 export type ListEnumProjectStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProjectStatus[]'>;
+export type EnumProjectVisibilityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProjectVisibility'>;
+export type ListEnumProjectVisibilityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProjectVisibility[]'>;
 export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>;
 export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>;
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>;

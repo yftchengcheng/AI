@@ -1,6 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DiagnosticStatus = exports.DiagnosticType = exports.MarketStatus = exports.ProjectStatus = exports.ToolType = void 0;
+exports.DiagnosticStatus = exports.DiagnosticType = exports.MarketStatus = exports.ProjectStatus = exports.ToolType = exports.ProjectVisibility = void 0;
+exports.ProjectVisibility = {
+    private: 'private',
+    public: 'public'
+};
 exports.ToolType = {
     app: 'app',
     miniapp: 'miniapp',

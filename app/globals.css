@@ -203,6 +203,8 @@
    Utilities
    ═══════════════════════════════════════════════════ */
 
+/* ── Glass effects ── */
+
 @utility glass {
   background: oklch(1 0 0 / 60%);
   backdrop-filter: blur(12px);
@@ -225,4 +227,95 @@
 .dark .glass-heavy {
   background: oklch(0.08 0 0 / 85%);
   border-color: oklch(1 0 0 / 10%);
+}
+
+/* ── Gradient text ── */
+
+@utility gradient-text {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Gradient surface ── */
+
+@utility gradient-surface {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+}
+
+@utility gradient-surface-light {
+  background: linear-gradient(135deg, oklch(0.53 0.24 264 / 8%), oklch(0.45 0.27 290 / 8%));
+}
+
+/* ── Animate card ── */
+
+@utility card-hover {
+  transition: all 0.2s ease;
+  &:hover {
+    border-color: oklch(0.53 0.24 264 / 25%);
+    box-shadow: 0 4px 24px oklch(0.53 0.24 264 / 8%);
+  }
+}
+
+.dark .card-hover:hover {
+  border-color: oklch(0.62 0.22 262 / 25%);
+  box-shadow: 0 4px 24px oklch(0.62 0.22 262 / 12%);
+}
+
+/* ── Animate pulse for building status ── */
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 oklch(0.53 0.24 264 / 30%); }
+  50% { box-shadow: 0 0 0 4px oklch(0.53 0.24 264 / 0%); }
+}
+
+@utility animate-pulse-glow {
+  animation: pulse-glow 2s infinite;
+}
+
+/* ── Page enter animation ── */
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@utility animate-page-enter {
+  animation: page-enter 0.3s ease-out;
+}
+
+/* ── Stagger children ── */
+
+@keyframes stagger-fade {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@utility stagger-item {
+  opacity: 0;
+  animation: stagger-fade 0.4s ease-out forwards;
+}
+
+/* ── Reduced motion ── */
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-page-enter,
+  .stagger-item {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .animate-pulse-glow {
+    animation: none;
+  }
+  .card-hover {
+    transition: none;
+  }
 }

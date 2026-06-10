@@ -48,6 +48,7 @@ export declare const ProjectScalarFieldEnum: {
     readonly name: "name";
     readonly type: "type";
     readonly status: "status";
+    readonly visibility: "visibility";
     readonly description: "description";
     readonly config: "config";
     readonly outputUrl: "outputUrl";

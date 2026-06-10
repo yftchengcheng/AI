@@ -8,4 +8,8 @@ export declare class ProjectsService {
     create(data: Prisma.ProjectCreateInput): any;
     update(id: string, data: Prisma.ProjectUpdateInput): any;
     remove(id: string): any;
+    publish(projectId: string): Promise<{
+        project: any;
+        marketplaceTool: any;
+    }>;
 }
